@@ -7,11 +7,15 @@ function createEl(htmlString, attrs, ...children) {
 
     if (typeof attrs === "object") {
         for (let key in attrs) {
-        if (key.substring(0, 2) === "on") {
-            el.addEventListener(key.substring(2).toLowerCase(), attrs[key]);
-        } else {
-            el.setAttribute(key, attrs[key]);
-        }
+            if (key.substring(0, 2) === "on") {
+                el.addEventListener(key.substring(2).toLowerCase(), attrs[key]);
+            } else if (key === 'style') {
+                for (let rule in attrs[key]) {
+                    el.style[rule] = attrs[key][rule];
+                }
+            } else {
+                el.setAttribute(key, attrs[key]);
+            }
         }
     }
 
@@ -23,7 +27,6 @@ function createEl(htmlString, attrs, ...children) {
         } else {
         node = document.createTextNode(child);
         }
-
         el.appendChild(node);
     });
 
